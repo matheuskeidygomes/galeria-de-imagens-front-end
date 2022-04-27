@@ -27,8 +27,6 @@ export default function Home() {
 
       e.preventDefault();
 
-      setLoading(true);
-
       const fData = new FormData();
       fData.append('imageTitle', title);
 
@@ -44,8 +42,6 @@ export default function Home() {
       });
 
       let json = await result.json();
-
-      setLoading(false);
 
       if (!json.error) {
 
@@ -67,8 +63,12 @@ export default function Home() {
 
   async function getImages() {
 
+    setLoading(true);
+
     let result = await fetch(`${api}images`);
     let json = await result.json();
+
+    setLoading(false);
     setImageList(json.images);
 
   }

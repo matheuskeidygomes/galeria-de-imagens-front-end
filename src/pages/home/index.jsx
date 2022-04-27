@@ -6,12 +6,14 @@ import Content from "../../components/content";
 import ImageItem from "../../components/imageItem";
 import Input from "../../components/input";
 import { api } from '../../services/api';
+import Loading from '../../assets/loading.gif';
 
 export default function Home() {
 
   const [title, setTitle] = useState('');
   const [imageList, setImageList] = useState([]);
   const fileField = useRef();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
@@ -24,6 +26,8 @@ export default function Home() {
     if (fileField.current.files.length > 0 && title !== "") {
 
       e.preventDefault();
+
+      setLoading(true);
 
       const fData = new FormData();
       fData.append('imageTitle', title);
@@ -41,6 +45,8 @@ export default function Home() {
 
       let json = await result.json();
 
+      setLoading(false);
+
       if (!json.error) {
 
         alert("Imagem adicionada com sucesso!");
@@ -53,7 +59,7 @@ export default function Home() {
 
     } else {
 
-      alert("Por favor, insira um título e uma imagem válida!")
+      alert("Por favor, insira um título e uma imagem válida!");
 
     }
 
@@ -75,13 +81,21 @@ export default function Home() {
 
         <Header />
 
-        <Input title={title} onChange={(e) => setTitle(e.target.value)} onSubmit={(e) => submitImage(e)} fileField={fileField} />
+        <Input title={title} onChange={(e) => setTitle(e.target.value)} onSubmit={(e) => submitImage(e)} fileField={fileField} loading={loading} />
 
         <Content>
 
-          {imageList.map((image, index) => {
+          {loading ? 
+
+          <img src={Loading} alt="loading" />
+          
+          :
+
+          imageList.map((image, index) => {
             return <ImageItem key={index} link={`${api}${image.path}`} title={`${image.imageTitle}`} id={image.id} />
-          })}
+          })
+
+          }
 
         </Content>
 

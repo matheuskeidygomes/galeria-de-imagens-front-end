@@ -16,9 +16,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-
+    setLoading(true);
     getImages();
-
+    setLoading(false);
   }, []);
 
   async function submitImage(e) {
@@ -63,12 +63,8 @@ export default function Home() {
 
   async function getImages() {
 
-    setLoading(true);
-
     let result = await fetch(`${api}images`);
     let json = await result.json();
-
-    setLoading(false);
     setImageList(json.images);
 
   }

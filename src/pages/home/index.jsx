@@ -21,32 +21,40 @@ export default function Home() {
 
   async function submitImage(e) {
 
-    e.preventDefault();
+    if (fileField.current.files.length > 0 && title !== "") {
 
-    const fData = new FormData();
-    fData.append('imageTitle', title);
+      e.preventDefault();
 
-    if (fileField.current.files.length > 0) {
-      for (let i = 0; i < fileField.current.files.length; i++) {
-        fData.append('file', fileField.current.files[i]);
+      const fData = new FormData();
+      fData.append('imageTitle', title);
+
+      if (fileField.current.files.length > 0) {
+        for (let i = 0; i < fileField.current.files.length; i++) {
+          fData.append('file', fileField.current.files[i]);
+        }
       }
-    }
 
-    let result = await fetch(`${api}upload`, {
-      method: 'POST',
-      body: fData
-    });
+      let result = await fetch(`${api}upload`, {
+        method: 'POST',
+        body: fData
+      });
 
-    let json = await result.json();
+      let json = await result.json();
 
-    if(!json.error) {
+      if (!json.error) {
 
-      alert("Imagem adicionada com sucesso!");
-      window.location.href = '/';
+        alert("Imagem adicionada com sucesso!");
+        window.location.href = '/';
+
+      } else {
+
+        alert(json.error);
+      }
 
     } else {
 
-      alert(json.error);
+      alert("Por favor, insira um título e uma imagem válida!")
+
     }
 
   }

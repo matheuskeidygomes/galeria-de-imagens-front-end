@@ -1,4 +1,5 @@
 import React from "react";
+import Loading from '../../assets/loading.gif';
 
 export default function ViewOne(props) {
 
@@ -6,11 +7,19 @@ export default function ViewOne(props) {
 
         <div className="flex flex-col justify-center items-center w-full">
 
-            <div className="border-2 border-gray-600 rounded w-11/12 m-3">
+            {props.loading ?
 
-                <img className="w-full" src={props.link} alt={props.title} />
+                <img src={Loading} alt="loading" />
 
-            </div>
+                :
+
+                <div className="border-2 border-gray-600 rounded w-11/12 m-3">
+
+                    <img className="w-full" src={props.link} alt={props.title} />
+
+                </div>
+
+            }
 
             <div className="flex">
 

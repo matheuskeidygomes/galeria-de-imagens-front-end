@@ -10,6 +10,7 @@ export default function View() {
 
     const [image, setImage] = useState({});
     const { id } = useParams();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -19,9 +20,13 @@ export default function View() {
 
     async function getImage() {
 
+        setLoading(true);
+
         let result = await fetch(`${api}images/${id}`);
         let json = await result.json();
+        
         setImage(json.image);
+        setLoading(false);
     }
 
     async function delImage(id) {
@@ -51,7 +56,7 @@ export default function View() {
 
                 <Header />
 
-                <ViewOne title={image.imageTitle} link={`${api}${image.path}`} onClick={()=> delImage(image.id)} />
+                <ViewOne title={image.imageTitle} loading={loading} link={`${api}${image.path}`} onClick={()=> delImage(image.id)} />
 
             </Area>
 

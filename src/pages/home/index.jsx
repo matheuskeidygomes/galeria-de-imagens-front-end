@@ -14,6 +14,7 @@ export default function Home() {
   const [imageList, setImageList] = useState([]);
   const fileField = useRef();
   const [loading, setLoading] = useState(false);
+  const [loadingForm, setLoadingForm] = useState(false);
 
   useEffect(() => {
     getImages();
@@ -24,6 +25,8 @@ export default function Home() {
     if (fileField.current.files.length > 0 && title !== "") {
 
       e.preventDefault();
+
+      setLoadingForm(true);
 
       const fData = new FormData();
       fData.append('imageTitle', title);
@@ -40,6 +43,8 @@ export default function Home() {
       });
 
       let json = await result.json();
+
+      setLoadingForm(false);
 
       if (!json.error) {
 
@@ -77,7 +82,7 @@ export default function Home() {
 
         <Header />
 
-        <Input title={title} onChange={(e) => setTitle(e.target.value)} onSubmit={(e) => submitImage(e)} fileField={fileField} loading={loading} />
+        <Input title={title} loadingForm={loadingForm} onChange={(e) => setTitle(e.target.value)} onSubmit={(e) => submitImage(e)} fileField={fileField} loading={loading} />
 
         <Content>
 

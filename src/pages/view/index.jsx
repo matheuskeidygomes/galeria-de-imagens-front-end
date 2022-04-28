@@ -46,7 +46,7 @@ export default function View() {
           alert(error);
         }
     
-      }
+    }
 
     return <>
 
